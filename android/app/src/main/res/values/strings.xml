@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">RemyndNow</string>
+    <string name="facebook_app_id">772746212120443</string>
+    <string name="fb_login_protocol_scheme">fb772746212120443</string>
+    <string name="facebook_client_token">0cd8b5f1b6cdf139ba330b3912c808dc</string>
+</resources>

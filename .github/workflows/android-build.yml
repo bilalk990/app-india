@@ -1,0 +1,75 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build Release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: gradle-
+
+      - name: Make gradlew executable
+        run: chmod +x android/gradlew
+
+      - name: Build Release APK
+        working-directory: android
+        run: ./gradlew generateCodegenArtifactsFromSchema assembleRelease --no-daemon --parallel --build-cache -PreactNativeArchitectures=arm64-v8a -Dorg.gradle.jvmargs="-Xmx4g -XX:MaxMetaspaceSize=1g"
+
+      - name: Rename APK
+        run: cp android/app/build/outputs/apk/release/app-release.apk android/app/build/outputs/apk/release/RemyndNow-v1.0-build${{ github.run_number }}.apk
+
+      - name: Upload APK as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: RemyndNow-v1.0-build${{ github.run_number }}
+          path: android/app/build/outputs/apk/release/RemyndNow-v1.0-build${{ github.run_number }}.apk
+          retention-days: 90
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0-build${{ github.run_number }}
+          name: RemyndNow v1.0 (Build ${{ github.run_number }})
+          body: |
+            **RemyndNow Android APK**
+
+            Download the APK below and install on your Android device.
+
+            - Branch: `${{ github.ref_name }}`
+            - Commit: `${{ github.sha }}`
+            - Build: #${{ github.run_number }}
+          files: android/app/build/outputs/apk/release/RemyndNow-v1.0-build${{ github.run_number }}.apk
+          generate_release_notes: false
