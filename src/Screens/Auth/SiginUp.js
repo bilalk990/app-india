@@ -297,6 +297,9 @@ const SiginUp = ({ navigation, route }) => {
       let data = new FormData();
       data.append('name', name);
       data.append('email', email);
+      if (socialData?.social_id) {
+        data.append('social_id', socialData.social_id);
+      }
       data.append('phone_prefix', '+91');
       data.append('phone_country_code', 'in');
       data.append('phone_number', mobile);

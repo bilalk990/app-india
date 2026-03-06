@@ -148,6 +148,7 @@ const SocialLogin = ({ navigation }) => {
               socialData: {
                 email: success?.user?.email,
                 name: success?.user?.name,
+                social_id: success?.user?.social_id,
               },
             });
           } else {
