@@ -173,6 +173,7 @@ const Festivals = ({ navigation }) => {
       data.append('festival_id', datas?.id);
       data.append('festival_date', datas?.date);
       data.append('before_days', item?.key);
+      data.append('is_recurring', datas?.is_multiple_festival == 1 ? 1 : 0);
       POST_FORM_DATA(
         'create-reminders',
         data,
@@ -180,8 +181,8 @@ const Festivals = ({ navigation }) => {
           SimpleToast?.show(success?.message || '');
           setVisible(false);
         },
-        error => {},
-        fail => {},
+        error => { },
+        fail => { },
       );
     }
   };
@@ -197,7 +198,6 @@ const Festivals = ({ navigation }) => {
       <View style={styles.topRightIcons}>
         <TouchableOpacity
           style={styles.iconBtn}
-          disabled={true}
           onPress={() => {
             setFestival(item);
             setVisible(true);
@@ -257,24 +257,24 @@ const Festivals = ({ navigation }) => {
           paddingTop: STATUSBAR_HEIGHT,
         }}
       >
-      <HeaderForUser
-        source_arrow={ImageConstant?.BackArrow}
-        style_backarrow={{
-          borderWidth: 1,
-          padding: 20,
-          borderColor: '#000',
-          tintColor: '#000',
-          borderRadius: 10,
-        }}
-        onPressLeftIcon={() => navigation?.goBack()}
-      />
+        <HeaderForUser
+          source_arrow={ImageConstant?.BackArrow}
+          style_backarrow={{
+            borderWidth: 1,
+            padding: 20,
+            borderColor: '#000',
+            tintColor: '#000',
+            borderRadius: 10,
+          }}
+          onPressLeftIcon={() => navigation?.goBack()}
+        />
 
-      <View style={styles.profileContainer}>
-        <Typography style={styles.profileName} type={Font?.Manrope_Regular}>
-          {localization?.Festivals?.title}
-        </Typography>
-      </View>
-      {/* <View
+        <View style={styles.profileContainer}>
+          <Typography style={styles.profileName} type={Font?.Manrope_Regular}>
+            {localization?.Festivals?.title}
+          </Typography>
+        </View>
+        {/* <View
         style={{
           flexDirection: 'row',
           justifyContent: 'center',
@@ -307,137 +307,137 @@ const Festivals = ({ navigation }) => {
         />
       </View> */}
 
-      {/* Search Input */}
-      <Input
-        placeholder={localization?.Festivals?.search}
-        onChange={handleSearch}
-        style_input={styles.inputText}
-        placeholderTextColor={'#00000080'}
-        source_eye={ImageConstant?.search}
-      />
+        {/* Search Input */}
+        <Input
+          placeholder={localization?.Festivals?.search}
+          onChange={handleSearch}
+          style_input={styles.inputText}
+          placeholderTextColor={'#00000080'}
+          source_eye={ImageConstant?.search}
+        />
 
-      <View
-        style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}
-      >
-        <TouchableOpacity
-          style={[
-            styles.filterButton,
-            selectState.length === 0 && styles.filterButtonActive,
-          ]}
-          onPress={() => {
-            setSelectState([]);
-          }}
+        <View
+          style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}
         >
-          <Typography
-            style={[
-              selectState.length === 0 && {
-                color: '#E41D54',
-                fontWeight: 'bold',
-              },
-            ]}
-            type={Font.Poppins_Regular}
-          >
-            All
-          </Typography>
-        </TouchableOpacity>
-        <View style={{ flex: 1, marginLeft: 10 }}>
-          <MultiSelectDropdown
-            placeholder="Select States"
-            marginHorizontal={0}
-            style_dropdown={{
-              width: '100%',
-              paddingHorizontal: 10,
-            }}
-            selectedValues={selectState}
-            error={error?.drop}
-            onChange={selected => setSelectState(selected)}
-            data={stateList || []}
-          />
-        </View>
-      </View>
-
-      {/* Custom Tabs */}
-      <View style={styles.tabRow}>
-        {['Yearly', 'Monthly'].map(tab => (
           <TouchableOpacity
-            key={tab}
-            style={[styles.tabButton, activeTab === tab && styles.activeTab]}
-            onPress={() => setActiveTab(tab)}
+            style={[
+              styles.filterButton,
+              selectState.length === 0 && styles.filterButtonActive,
+            ]}
+            onPress={() => {
+              setSelectState([]);
+            }}
           >
             <Typography
-              type={Font?.Poppins_Medium}
               style={[
-                styles.tabText,
-                activeTab === tab && styles.activeTabText,
+                selectState.length === 0 && {
+                  color: '#E41D54',
+                  fontWeight: 'bold',
+                },
               ]}
+              type={Font.Poppins_Regular}
             >
-              {tab} Festivals
+              All
             </Typography>
           </TouchableOpacity>
-        ))}
-      </View>
+          <View style={{ flex: 1, marginLeft: 10 }}>
+            <MultiSelectDropdown
+              placeholder="Select States"
+              marginHorizontal={0}
+              style_dropdown={{
+                width: '100%',
+                paddingHorizontal: 10,
+              }}
+              selectedValues={selectState}
+              error={error?.drop}
+              onChange={selected => setSelectState(selected)}
+              data={stateList || []}
+            />
+          </View>
+        </View>
 
-      {loader ? (
-        <ActivityIndicator
-          size="large"
-          color="#F53800"
-          style={{ marginTop: 50 }}
-        />
-      ) : (
-        <>
-          {activeTab === 'Yearly'
-            ? filteredFestivals.singleFestivals.map(item =>
+        {/* Custom Tabs */}
+        <View style={styles.tabRow}>
+          {['Yearly', 'Monthly'].map(tab => (
+            <TouchableOpacity
+              key={tab}
+              style={[styles.tabButton, activeTab === tab && styles.activeTab]}
+              onPress={() => setActiveTab(tab)}
+            >
+              <Typography
+                type={Font?.Poppins_Medium}
+                style={[
+                  styles.tabText,
+                  activeTab === tab && styles.activeTabText,
+                ]}
+              >
+                {tab} Festivals
+              </Typography>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {loader ? (
+          <ActivityIndicator
+            size="large"
+            color="#F53800"
+            style={{ marginTop: 50 }}
+          />
+        ) : (
+          <>
+            {activeTab === 'Yearly'
+              ? filteredFestivals.singleFestivals.map(item =>
                 renderFestivalCard(item),
               )
-            : filteredFestivals.multipleFestivals.map(item =>
+              : filteredFestivals.multipleFestivals.map(item =>
                 renderFestivalCard(item),
               )}
-        </>
-      )}
+          </>
+        )}
 
-      <View style={{ height: bottomSpacing }} />
+        <View style={{ height: bottomSpacing }} />
 
-      <CustomBottomSheet visible={visible} onClose={() => setVisible(false)}>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <LinearGradient
-            colors={['#FD8F1E', '#592009']}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.reminderGradient}
-          >
-            <Image
-              source={ImageConstant?.reminder}
-              style={styles.reminderSheetIcon}
+        <CustomBottomSheet visible={visible} onClose={() => setVisible(false)}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <LinearGradient
+              colors={['#FD8F1E', '#592009']}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
+              style={styles.reminderGradient}
+            >
+              <Image
+                source={ImageConstant?.reminder}
+                style={styles.reminderSheetIcon}
+              />
+            </LinearGradient>
+          </View>
+
+          <Typography style={styles.title} type={Font?.Poppins_Bold}>
+            {localization?.HomeDetails?.setReminder}
+          </Typography>
+          <Typography style={styles.reminderDesc} type={Font?.Poppins_Regular}>
+            {localization?.HomeDetails?.reminderDesc}
+          </Typography>
+          <View style={{ width: '100%' }}>
+            <DropdownComponent
+              placeholder="Select days"
+              marginHorizontal={0}
+              style_dropdown={{
+                width: '100%',
+                paddingHorizontal: 10,
+                marginHorizontal: 0,
+              }}
+              value={Key?.value}
+              error={error?.drop}
+              onChange={v => setKey(v)}
+              data={[
+                { label: 'Before 1 day', value: 'before_1_day', key: 1 },
+                { label: 'Before 2 days', value: 'before_2_days', key: 2 },
+                { label: 'Before 3 days', value: 'before_3_days', key: 3 },
+              ]}
             />
-          </LinearGradient>
-        </View>
-
-        <Typography style={styles.title} type={Font?.Poppins_Bold}>
-          {localization?.HomeDetails?.setReminder}
-        </Typography>
-        <Typography style={styles.reminderDesc} type={Font?.Poppins_Regular}>
-          {localization?.HomeDetails?.reminderDesc}
-        </Typography>
-        <View style={{ width: '100%' }}>
-          <DropdownComponent
-            placeholder="Select days"
-            marginHorizontal={0}
-            style_dropdown={{
-              width: '100%',
-              paddingHorizontal: 10,
-              marginHorizontal: 0,
-            }}
-            value={Key?.value}
-            error={error?.drop}
-            onChange={v => setKey(v)}
-            data={[
-              { label: 'Before 1 day', value: 'before_1_day', key: 1 },
-              { label: 'Before 2 days', value: 'before_2_days', key: 2 },
-              { label: 'Before 3 days', value: 'before_3_days', key: 3 },
-            ]}
-          />
-        </View>
-        {/* <View
+          </View>
+          {/* <View
           style={[styles.row, { marginTop: 20, justifyContent: 'flex-start' }]}
         >
           <TouchableOpacity onPress={() => setOnEkadashi(!onEkadashi)}>
@@ -453,29 +453,29 @@ const Festivals = ({ navigation }) => {
           </Typography>
         </View> */}
 
-        {/* Buttons */}
-        <View style={[styles.row, { marginTop: 30 }]}>
-          <View style={styles.halfWidth}>
-            <Button
-              onPress={() => setVisible(false)}
-              style={styles.cancelBtn}
-              linerColor={['#FFFFFF', '#FFFFFF']}
-              title={localization?.HomeDetails?.cancel}
-              title_style={{ color: '#592009' }}
-            />
+          {/* Buttons */}
+          <View style={[styles.row, { marginTop: 30 }]}>
+            <View style={styles.halfWidth}>
+              <Button
+                onPress={() => setVisible(false)}
+                style={styles.cancelBtn}
+                linerColor={['#FFFFFF', '#FFFFFF']}
+                title={localization?.HomeDetails?.cancel}
+                title_style={{ color: '#592009' }}
+              />
+            </View>
+            <View style={styles.halfWidth}>
+              <Button
+                onPress={() => {
+                  Create_Notification(festival, Key);
+                }}
+                linerColor={['#592009', '#592009']}
+                title={localization?.HomeDetails?.confirm}
+                title_style={{ color: '#fff' }}
+              />
+            </View>
           </View>
-          <View style={styles.halfWidth}>
-            <Button
-              onPress={() => {
-                Create_Notification(festival, Key);
-              }}
-              linerColor={['#592009', '#592009']}
-              title={localization?.HomeDetails?.confirm}
-              title_style={{ color: '#fff' }}
-            />
-          </View>
-        </View>
-      </CustomBottomSheet>
+        </CustomBottomSheet>
       </ScrollView>
     </View>
   );
