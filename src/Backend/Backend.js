@@ -261,7 +261,7 @@ export const GET_WITH_TOKEN = async (
   headers = {},
   status = () => { },
 ) => {
-  console.log('USER TOKEN', token);
+  console.log('USER TOKEN', store.getState().Token);
   try {
     await axios({
       method: 'get',
