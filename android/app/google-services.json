@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "342118935526",
-    "project_id": "remyndnow-b55ae",
-    "storage_bucket": "remyndnow-b55ae.firebasestorage.app"
+    "project_number": "247252272289",
+    "project_id": "remindnownew",
+    "storage_bucket": "remindnownew.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:342118935526:android:1092fcb199ddb13ca08427",
+        "mobilesdk_app_id": "1:247252272289:android:b6ea838d59e4eb50a19ce0",
         "android_client_info": {
           "package_name": "com.remyndnow"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "342118935526-fpjfhipbp20bn878gq7s8fhs20v3kri2.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.remyndnow",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "342118935526-5enee4e4c8rm0k9gu8nsufdnm8mp9h3l.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCJfh6YOLA7lgp6TgSbwuGE0aJJyR571uM"
+          "current_key": "AIzaSyBa0hH_K2h86BxqghADGW0fea_2Kn-YbvU"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "342118935526-5enee4e4c8rm0k9gu8nsufdnm8mp9h3l.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
