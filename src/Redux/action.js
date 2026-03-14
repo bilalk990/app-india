@@ -4,7 +4,8 @@ import {
   LOG_OUT,
   SKIP,
   AUTH,
-  LANGUAGE_CODE
+  LANGUAGE_CODE,
+  PRIVACY_ACCEPTED
 } from './constant';
 
 export const isAuth = status => ({
@@ -39,5 +40,12 @@ export const langCode = data => ({
   type: LANGUAGE_CODE,
   payload: {
     language_code: data,
+  },
+});
+
+export const isPrivacyAccepted = status => ({
+  type: PRIVACY_ACCEPTED,
+  payload: {
+    isPrivacyAccepted: status,
   },
 });

@@ -18,16 +18,24 @@ import LinearGradient from 'react-native-linear-gradient';
 import localization from '../../../Constants/localization';
 import { GET } from '../../../Backend/Backend';
 import { useIsFocused } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { isPrivacyAccepted } from '../../../Redux/action';
 
 const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
 
-const Privacy = () => {
+const Privacy = ({ navigation }) => {
   const [data, setData] = useState({});
   const [loader, setLoader] = useState(false);
+  const dispatch = useDispatch();
+  const isPrivacyAlreadyAccepted = useSelector(state => state.isPrivacyAccepted);
 
   useEffect(() => {
     GetFaq();
   }, [useIsFocused()]);
+
+  const handleAgree = () => {
+    dispatch(isPrivacyAccepted(true));
+  };
 
   const GetFaq = () => {
     setLoader(true);
@@ -55,17 +63,20 @@ const Privacy = () => {
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
       <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}>
-        <Header
-          source_arrow={ImageConstant?.BackArrow}
-          style_backarrow={{
-            borderWidth: 1,
-            padding: 20,
-            borderColor: '#FFFFFF',
-            tintColor: '#FFFFFF',
-            borderRadius: 16,
-          }}
-          containerStyle={{ marginTop: 5 }}
-        />
+        {!isPrivacyAlreadyAccepted ? null : (
+          <Header
+            source_arrow={ImageConstant?.BackArrow}
+            onPress={() => navigation.goBack()}
+            style_backarrow={{
+              borderWidth: 1,
+              padding: 20,
+              borderColor: '#FFFFFF',
+              tintColor: '#FFFFFF',
+              borderRadius: 16,
+            }}
+            containerStyle={{ marginTop: 5 }}
+          />
+        )}
         <View style={styles.profileContainer}>
           <Typography style={styles.profileName} type={Font?.Manrope_Regular}>
             {localization?.Settings?.Privacy}
@@ -74,10 +85,21 @@ const Privacy = () => {
       </LinearGradient>
 
       <ScrollView contentContainerStyle={styles.container}>
-      {loader ? (
-               <ActivityIndicator size="large" color="#F53800" />
-            ) : (
-        <Typography size={18}>{data?.cms_desc?.body}</Typography>)}
+        {loader ? (
+          <ActivityIndicator size="large" color="#F53800" />
+        ) : (
+          <Typography size={18}>{data?.cms_desc?.body}</Typography>
+        )}
+
+        {!isPrivacyAlreadyAccepted && (
+          <View style={{ marginTop: 30 }}>
+            <Button
+              onPress={handleAgree}
+              title="Agree"
+              linerColor={['#F53800', '#E43500']}
+            />
+          </View>
+        )}
       </ScrollView>
     </View>
   );

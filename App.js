@@ -7,6 +7,7 @@ import { Provider, useSelector } from 'react-redux';
 import { persistor, store } from './src/Redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import RootStack from './src/Navigation/RootStack';
+import Privacy from './src/Screens/Private/Setting/Privacy';
 import { getLanguage, setLanguage } from './src/Constants/AsyncStorage';
 import localization from './src/Constants/localization';
 import { PermissionsAndroid, Platform, View, StatusBar, Text, ActivityIndicator } from 'react-native';
@@ -56,7 +57,7 @@ const App = () => {
   const [langCode, setLangCode] = useState('');
 
 
-const requestNotificationPermissions = async () => {
+  const requestNotificationPermissions = async () => {
     try {
       if (Platform.OS === 'ios') {
         await PushNotificationIOS.requestPermissions();
@@ -125,7 +126,7 @@ const requestNotificationPermissions = async () => {
   return (
     <ErrorBoundary>
       <SafeAreaProvider>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <StatusBar
             translucent
             backgroundColor="transparent"
@@ -146,12 +147,17 @@ export default App;
 
 const MainNavigation = () => {
   const isAuth = useSelector(store => store?.isAuth);
+  const isPrivacyAccepted = useSelector(state => state.isPrivacyAccepted);
   const languageCode = useSelector(state => state.language_code);
 
   return (
     <NavigationContainer ref={navigationRef} key={languageCode}>
       <FocusAwareStatusBar />
-      {isAuth ? <RootStack /> : <AuthStack />}
+      {isAuth ? (
+        isPrivacyAccepted ? <RootStack /> : <Privacy />
+      ) : (
+        <AuthStack />
+      )}
     </NavigationContainer>
   );
 };

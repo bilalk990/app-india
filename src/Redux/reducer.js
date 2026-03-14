@@ -1,4 +1,4 @@
-import { AUTH, TOKEN, LOG_OUT, USER, SKIP, LANGUAGE_CODE } from './constant';
+import { AUTH, TOKEN, LOG_OUT, USER, SKIP, LANGUAGE_CODE, PRIVACY_ACCEPTED } from './constant';
 const initialState = {
   isAuth: false,
   isIntro: false,
@@ -8,6 +8,7 @@ const initialState = {
     intro: true,
   },
   language_code: '',
+  isPrivacyAccepted: false,
 };
 const todoReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -48,6 +49,11 @@ const todoReducer = (state = initialState, action) => {
       return {
         ...state,
         language_code: action.payload.language_code,
+      };
+    case PRIVACY_ACCEPTED:
+      return {
+        ...state,
+        isPrivacyAccepted: action.payload.isPrivacyAccepted,
       };
     default:
       return state;
