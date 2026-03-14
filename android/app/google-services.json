@@ -1,26 +1,79 @@
 {
   "project_info": {
-    "project_number": "247252272289",
-    "project_id": "remindnownew",
-    "storage_bucket": "remindnownew.firebasestorage.app"
+    "project_number": "552363472501",
+    "project_id": "newitvission",
+    "storage_bucket": "newitvission.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:247252272289:android:b6ea838d59e4eb50a19ce0",
+        "mobilesdk_app_id": "1:552363472501:android:af21b022b6ad5a8b47ea3c",
         "android_client_info": {
-          "package_name": "com.remyndnow"
+          "package_name": "com.example.habit"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "552363472501-hnqd4h8jrhapvjdn6cjtrt7f46j1eehb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBa0hH_K2h86BxqghADGW0fea_2Kn-YbvU"
+          "current_key": "AIzaSyAaSrxQPOiz4lmDhseUlP3ke4bF9MXQgA4"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552363472501-hnqd4h8jrhapvjdn6cjtrt7f46j1eehb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "552363472501-j96qcfuu8pssd7r8dbrtg176k6kaf3c4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.habit"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:552363472501:android:ea74f1846291dcde47ea3c",
+        "android_client_info": {
+          "package_name": "com.remyndnow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "552363472501-hnqd4h8jrhapvjdn6cjtrt7f46j1eehb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaSrxQPOiz4lmDhseUlP3ke4bF9MXQgA4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "552363472501-hnqd4h8jrhapvjdn6cjtrt7f46j1eehb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "552363472501-j96qcfuu8pssd7r8dbrtg176k6kaf3c4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.habit"
+              }
+            }
+          ]
         }
       }
     }
