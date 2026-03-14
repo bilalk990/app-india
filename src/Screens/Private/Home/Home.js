@@ -52,8 +52,8 @@ const HomeScreen = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(
     moment().format('YYYY-MM-DD'),
   );
-  console.log('userDetails---',userDetails);
-  
+  console.log('userDetails---', userDetails);
+
   const isFocused = useIsFocused();
   const [data, setData] = useState({
     sunrise: '06:05 AM',
@@ -239,7 +239,7 @@ const HomeScreen = ({ navigation }) => {
           }),
         });
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const fetchLocation = async () => {
@@ -276,7 +276,7 @@ const HomeScreen = ({ navigation }) => {
           [
             {
               text: 'Open Settings',
-              onPress: () => openSettings().catch(() => {}),
+              onPress: () => openSettings().catch(() => { }),
             },
             { text: 'Cancel', style: 'cancel' },
           ],
@@ -430,9 +430,9 @@ const HomeScreen = ({ navigation }) => {
       <ImageBackground
         source={ImageConstant?.HomeBack}
         style={{
-          height: (languageCode == 'ta' || languageCode == 'te' ? 320 : 280) + STATUSBAR_HEIGHT,
+          height: (languageCode == 'ta' || languageCode == 'te' ? 320 : 280) + insets.top,
           width: '100%',
-          paddingTop: STATUSBAR_HEIGHT,
+          paddingTop: insets.top,
         }}
       >
         <View style={{ flex: 1, paddingHorizontal: 20 }}>
@@ -676,118 +676,118 @@ const HomeScreen = ({ navigation }) => {
           />
         </View>
         <View style={styles.calendarWrapper}>
-        <Calendar
-          current={moment().format('YYYY-MM-DD')}
-          markedDates={{
-            ...markedDates,
-            ...(selectedDate && {
-              [selectedDate]: {
-                selected: true,
-                selectedColor: '#F53800',
-                selectedTextColor: '#fff',
-              },
-            }),
-          }}
-          dayComponent={({ date, state }) => {
-            const isSelected =
-              date.dateString === moment().format('YYYY-MM-DD');
-            // find event for this date
-            const event = temples.find(item => item?.date === date.dateString);
+          <Calendar
+            current={moment().format('YYYY-MM-DD')}
+            markedDates={{
+              ...markedDates,
+              ...(selectedDate && {
+                [selectedDate]: {
+                  selected: true,
+                  selectedColor: '#F53800',
+                  selectedTextColor: '#fff',
+                },
+              }),
+            }}
+            dayComponent={({ date, state }) => {
+              const isSelected =
+                date.dateString === moment().format('YYYY-MM-DD');
+              // find event for this date
+              const event = temples.find(item => item?.date === date.dateString);
 
-            // check if event name matches any in festivalTypes
-            let eventIcon = null;
-            const hasReminder = event?.is_remainder == 1;
+              // check if event name matches any in festivalTypes
+              let eventIcon = null;
+              const hasReminder = event?.is_remainder == 1;
 
-            if (event) {
-              const match = festivalTypes.find(f =>
-                event.name.toLowerCase().includes(f.label.toLowerCase()),
-              );
-              eventIcon = match ? match.icon : ImageConstant?.FestivalNew; // fallback to Festival icon
-            }
+              if (event) {
+                const match = festivalTypes.find(f =>
+                  event.name.toLowerCase().includes(f.label.toLowerCase()),
+                );
+                eventIcon = match ? match.icon : ImageConstant?.FestivalNew; // fallback to Festival icon
+              }
 
-            return (
-              <TouchableOpacity
-                style={[
-                  styles.dayContainer,
-                  isSelected && styles.selectedDay,
-                  hasReminder && styles.reminderDay,
-                ]}
-                onPress={() => {
-                  if (eventIcon) {
-                    setSelectedDate(date.dateString);
-                    setVisible(true);
-                  }
-                }}
-              >
-                <View
-                  style={{
-                    width: 40,
-                    height: 40,
-                    justifyContent: event ? 'flex-end' : 'center',
-                    alignItems: 'center',
+              return (
+                <TouchableOpacity
+                  style={[
+                    styles.dayContainer,
+                    isSelected && styles.selectedDay,
+                    hasReminder && styles.reminderDay,
+                  ]}
+                  onPress={() => {
+                    if (eventIcon) {
+                      setSelectedDate(date.dateString);
+                      setVisible(true);
+                    }
                   }}
                 >
-                  <Typography
-                    size={16}
-                    style={[
-                      styles.dayText,
-                      state === 'disabled' && styles.disabledText,
-                      isSelected && styles.selectedDayText,
-                    ]}
+                  <View
+                    style={{
+                      width: 40,
+                      height: 40,
+                      justifyContent: event ? 'flex-end' : 'center',
+                      alignItems: 'center',
+                    }}
                   >
-                    {date.day}
-                  </Typography>
-                </View>
-                {event && (
-                  <Image
-                    source={eventIcon}
-                    style={{ width: 16, height: 16, marginTop: 3 }}
-                    resizeMode="contain"
-                  />
-                )}
-              </TouchableOpacity>
-            );
-          }}
-          theme={{
-            backgroundColor: '#ffffff',
-            calendarBackground: '#ffffff',
-            textSectionTitleColor: '#000',
-            selectedDayBackgroundColor: '#e41d54',
-            selectedDayTextColor: '#ffffff',
-            todayTextColor: '#e41d54',
-            dayTextColor: '#2d4150',
-            textDisabledColor: '#d9e1e8',
-            dotColor: '#e41d54',
-            arrowColor: '#e41d54',
-            monthTextColor: '#000',
-            indicatorColor: '#e41d54',
-            textDayFontFamily: 'Poppins-Regular',
-            textMonthFontFamily: 'Poppins-Bold',
-            textDayHeaderFontFamily: 'Poppins-Bold',
-            'stylesheet.calendar.main': {
-              week: {
-                marginTop: 0,
-                marginBottom: 0,
-                paddingVertical: 0,
-                flexDirection: 'row', // IMPORTANT – iske bina vertical ho jata hai
-                justifyContent: 'space-around',
+                    <Typography
+                      size={16}
+                      style={[
+                        styles.dayText,
+                        state === 'disabled' && styles.disabledText,
+                        isSelected && styles.selectedDayText,
+                      ]}
+                    >
+                      {date.day}
+                    </Typography>
+                  </View>
+                  {event && (
+                    <Image
+                      source={eventIcon}
+                      style={{ width: 16, height: 16, marginTop: 3 }}
+                      resizeMode="contain"
+                    />
+                  )}
+                </TouchableOpacity>
+              );
+            }}
+            theme={{
+              backgroundColor: '#ffffff',
+              calendarBackground: '#ffffff',
+              textSectionTitleColor: '#000',
+              selectedDayBackgroundColor: '#e41d54',
+              selectedDayTextColor: '#ffffff',
+              todayTextColor: '#e41d54',
+              dayTextColor: '#2d4150',
+              textDisabledColor: '#d9e1e8',
+              dotColor: '#e41d54',
+              arrowColor: '#e41d54',
+              monthTextColor: '#000',
+              indicatorColor: '#e41d54',
+              textDayFontFamily: 'Poppins-Regular',
+              textMonthFontFamily: 'Poppins-Bold',
+              textDayHeaderFontFamily: 'Poppins-Bold',
+              'stylesheet.calendar.main': {
+                week: {
+                  marginTop: 0,
+                  marginBottom: 0,
+                  paddingVertical: 0,
+                  flexDirection: 'row', // IMPORTANT – iske bina vertical ho jata hai
+                  justifyContent: 'space-around',
+                },
               },
-            },
-            'stylesheet.day.basic': {
-              base: {
-                marginVertical: 0,
-                paddingVertical: 0,
-                alignItems: 'center',
-                justifyContent: 'center',
+              'stylesheet.day.basic': {
+                base: {
+                  marginVertical: 0,
+                  paddingVertical: 0,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                },
               },
-            },
-          }}
-          style={styles.calendar}
-          onDayPress={day => {
-            setSelectedDate(day.dateString);
-            setVisible(true);
-          }}
-        />
+            }}
+            style={styles.calendar}
+            onDayPress={day => {
+              setSelectedDate(day.dateString);
+              setVisible(true);
+            }}
+          />
         </View>
       </View>
 
@@ -1008,7 +1008,7 @@ const HomeScreen = ({ navigation }) => {
               }}
             >
               <Image
-                source={ item.image ? { uri: item.image } : ImageConstant?.Festival2}
+                source={item.image ? { uri: item.image } : ImageConstant?.Festival2}
                 style={{
                   width: 130,
                   height: 160,
