@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
 import HeaderForUser from '../../../Component/HeaderForUser';
 import { FocusAwareStatusBar } from '../../../Component/UI/FocusAwareStatusBar';
 import { ImageConstant } from '../../../Constants/ImageConstant';
@@ -258,7 +257,7 @@ const Festivals = ({ navigation }) => {
         contentContainerStyle={{
           flexGrow: 1,
           paddingHorizontal: 20,
-          paddingTop: STATUSBAR_HEIGHT,
+          paddingTop: insets.top,
         }}
       >
         <HeaderForUser
