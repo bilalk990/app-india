@@ -8,8 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import Header from '../../../Component/Header';
 import { ImageConstant } from '../../../Constants/ImageConstant';
@@ -20,6 +19,8 @@ import { isAuth } from '../../../Redux/action';
 import localization from '../../../Constants/localization';
 
 const Setting = ({navigation}) => {
+  const insets = useSafeAreaInsets();
+  
   const menuItems = [
     {
       icon: ImageConstant?.calander,
@@ -73,18 +74,20 @@ const Setting = ({navigation}) => {
    const dispatch = useDispatch()
   return (
     <View style={{ flex: 1 }}>
-      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}>
-        <Header
-          source_arrow={ImageConstant?.BackArrow}
-          style_backarrow={{
-            borderWidth: 1,
-            padding: 20,
-            borderColor: '#FFFFFF',
-            tintColor: '#FFFFFF',
-            borderRadius: 16,
-          }}
-          containerStyle={{ marginTop: 5 }}
-        />
+      <LinearGradient colors={['#F53800', '#E43500']} style={styles.background}>
+        <View style={{ paddingTop: insets.top }}>
+          <Header
+            source_arrow={ImageConstant?.BackArrow}
+            style_backarrow={{
+              borderWidth: 1,
+              padding: 20,
+              borderColor: '#FFFFFF',
+              tintColor: '#FFFFFF',
+              borderRadius: 16,
+            }}
+            containerStyle={{ marginTop: 5 }}
+          />
+        </View>
         <View style={styles.profileContainer}>
           <Typography style={styles.profileName}> {localization?.Settings?.title}</Typography>
         </View>
@@ -139,7 +142,7 @@ export default Setting;
 
 const styles = StyleSheet.create({
   background: {
-    height: 198 + STATUSBAR_HEIGHT,
+    height: 198,
     paddingHorizontal: 20,
   },
   profileContainer: {

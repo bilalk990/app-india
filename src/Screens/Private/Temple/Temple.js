@@ -6,8 +6,8 @@ import {
   StatusBar,
 } from 'react-native';
 import React from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
 import HeaderForUser from '../../../Component/HeaderForUser';
 import { ImageConstant } from '../../../Constants/ImageConstant';
 import Typography from '../../../Component/UI/Typography';
@@ -16,6 +16,8 @@ import localization from '../../../Constants/localization';
 import { FocusAwareStatusBar } from '../../../Component/UI/FocusAwareStatusBar';
 
 const Temple = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
+  
   return (
     <View style={{ flex: 1, backgroundColor: '#fffbf6' }}>
       <FocusAwareStatusBar barStyle="dark-content" backgroundColor="transparent" />
@@ -23,7 +25,7 @@ const Temple = ({ navigation }) => {
         contentContainerStyle={{
           flexGrow: 1,
           paddingHorizontal: 20,
-          paddingTop: STATUSBAR_HEIGHT,
+          paddingTop: insets.top,
         }}
       >
       {/* Header */}

@@ -6,8 +6,8 @@ import {
   StatusBar,
   Platform,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
 import { ImageConstant } from '../../Constants/ImageConstant';
 import Typography from '../../Component/UI/Typography';
 import Button from '../../Component/Button';
@@ -25,6 +25,7 @@ import { FACEBOOK_LOGIN } from '../../Backend/api_routes';
 
 const SocialLogin = ({ navigation }) => {
   const dispatch = useDispatch();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -185,10 +186,10 @@ const SocialLogin = ({ navigation }) => {
     <>
       <ImageBackground
         source={ImageConstant?.BackGroundImage}
-        style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}
+        style={styles.background}
         resizeMode="cover"
       >
-        <View style={styles.overlay}>
+        <View style={[styles.overlay, { paddingTop: insets.top }]}>
           {/* Title Section */}
           <View style={styles.titleWrapper}>
             <Typography
