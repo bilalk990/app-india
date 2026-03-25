@@ -409,9 +409,11 @@ const HomeScreen = ({ navigation }) => {
   // inside your component render
   const currentDate = moment().format('YYYY-MM-DD');
 
-  // get upcoming festivals only
+  // get upcoming festivals only with reminders enabled
   const upcoming = (temples || []).filter(item => {
-    return item?.date && moment(item.date).isAfter(currentDate, 'day');
+    return item?.date && 
+           moment(item.date).isAfter(currentDate, 'day') && 
+           item?.is_remainder == 1;
   });
 
   // show "All" button only when more than 3 upcoming items exist
