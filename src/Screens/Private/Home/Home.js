@@ -463,7 +463,7 @@ const HomeScreen = ({ navigation }) => {
           />
           {/* Header */}
           <View
-            style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+            style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' }}
           >
             <View style={styles.header}>
               <Typography
@@ -489,6 +489,7 @@ const HomeScreen = ({ navigation }) => {
                 style={styles.location}
                 size={18}
                 type={Font?.Poppins_SemiBold}
+                numberOfLines={2}
               >
                 {currentLocation || ''}
               </Typography>
@@ -499,7 +500,7 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Typography
                   style={styles.sunLabel}
-                  size={16}
+                  size={15}
                   type={Font?.Poppins_SemiBold}
                   numberOfLines={1}
                 >
@@ -507,7 +508,7 @@ const HomeScreen = ({ navigation }) => {
                 </Typography>
                 <Typography
                   style={styles.sunTime}
-                  size={14}
+                  size={13}
                   type={Font?.Poppins_Regular}
                 >
                   {data?.sunrise}
@@ -518,7 +519,7 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Typography
                   style={styles.sunLabel}
-                  size={16}
+                  size={15}
                   type={Font?.Poppins_SemiBold}
                   numberOfLines={1}
                 >
@@ -526,7 +527,7 @@ const HomeScreen = ({ navigation }) => {
                 </Typography>
                 <Typography
                   style={styles.sunTime}
-                  size={14}
+                  size={13}
                   type={Font?.Poppins_Regular}
                 >
                   {data?.sunset}
@@ -1096,7 +1097,9 @@ const styles = StyleSheet.create({
   },
   header: {
     marginTop: 20,
-    width: '70%',
+    width: '60%',
+    flex: 1,
+    paddingRight: 10,
   },
   goodMorning: {
     color: '#fff',
@@ -1115,8 +1118,8 @@ const styles = StyleSheet.create({
     marginTop: 30,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    width: '35%',
-    minWidth: 140,
+    width: 130,
+    flexShrink: 0,
   },
   sunLabel: {
     color: '#fff',
