@@ -222,15 +222,19 @@ const Festivals = ({ navigation }) => {
         <Typography style={styles.cardTitle} type={Font.Poppins_Bold}>
           {item?.festival_desc?.name || item.name}
         </Typography>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Typography>{item?.festival_desc?.name || item.name}</Typography>
-          <Typography style={styles.viewDetails} type={Font.Poppins_SemiBold}>
-            {localization?.Festivals?.view_details}{' '}
-            <Image
-              source={ImageConstant.rightarrow}
-              style={{ width: 17, height: 10 }}
-            />
+        <View style={styles.cardFooter}>
+          <Typography style={styles.cardSubtitle} numberOfLines={1}>
+            {item?.festival_desc?.name || item.name}
           </Typography>
+          <TouchableOpacity style={styles.viewDetailsBtn}>
+            <Typography style={styles.viewDetails} type={Font.Poppins_SemiBold}>
+              {localization?.Festivals?.view_details}{' '}
+              <Image
+                source={ImageConstant.rightarrow}
+                style={{ width: 17, height: 10 }}
+              />
+            </Typography>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>

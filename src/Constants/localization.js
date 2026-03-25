@@ -113,6 +113,7 @@ export default new LocalizedStrings({
     },
     HomeDetails: {
       reminderMe: 'REMINDER ME',
+      reminderEnabled: 'REMINDER ENABLED',
       panchangTitle: 'Panchag',
       panchangFor: 'PANCHAG FOR',
       aboutFestival: 'About Festival',
@@ -252,6 +253,7 @@ export default new LocalizedStrings({
     },
     HomeDetails: {
       reminderMe: 'मुझे याद दिलाएं',
+      reminderEnabled: 'रिमाइंडर सक्षम है',
       panchangTitle: 'पंचांग',
       panchangFor: 'के लिए पंचांग',
       aboutFestival: 'त्योहार के बारे में',
@@ -392,6 +394,7 @@ export default new LocalizedStrings({
     },
     HomeDetails: {
       reminderMe: 'எனக்கு நினைவூட்டவும்',
+      reminderEnabled: 'நினைவூட்டல் இயக்கப்பட்டது',
       panchangTitle: 'பஞ்சாங்கம்',
       panchangFor: 'இற்கான பஞ்சாங்கம்',
       aboutFestival: 'திருவிழா பற்றி',
@@ -530,6 +533,7 @@ export default new LocalizedStrings({
     },
     HomeDetails: {
       reminderMe: 'నన్ను గుర్తు చేయి',
+      reminderEnabled: 'రిమైండర్ ప్రారంభించబడింది',
       panchangTitle: 'పంచాంగం',
       panchangFor: 'కు పంచాంగం',
       aboutFestival: 'పండుగ గురించి',

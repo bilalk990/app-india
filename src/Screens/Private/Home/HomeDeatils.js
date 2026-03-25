@@ -120,8 +120,18 @@ useEffect(() => {
         success => {
           console.log('success---success---', success);
 
-          SimpleToast?.show(success?.message || '');
+          SimpleToast?.show(success?.message || 'Reminder created successfully');
           setVisible(false);
+          
+          // Update the route params to reflect reminder is enabled
+          if (route?.params?.data) {
+            route.params.data.is_remainder = 1;
+          }
+          
+          // Refresh the festival data
+          if (data?.id) {
+            getTemples(data.id);
+          }
         },
         error => {
           console.log('error---error--', error);
@@ -184,15 +194,26 @@ useEffect(() => {
           </View>
 
           <TouchableOpacity
-            style={styles.reminderButton}
-            onPress={() => setVisible(true)}
+            style={[
+              styles.reminderButton,
+              route?.params?.data?.is_remainder == 1 && styles.reminderButtonActive
+            ]}
+            onPress={() => {
+              if (route?.params?.data?.is_remainder == 1) {
+                SimpleToast.show('Reminder is already enabled for this festival');
+              } else {
+                setVisible(true);
+              }
+            }}
           >
             <Image
               source={ImageConstant?.reminder}
               style={styles.reminderBtnIcon}
             />
             <Typography color={'#fff'} size={12} type={Font?.Poppins_Medium}>
-              {localization?.HomeDetails?.reminderMe}
+              {route?.params?.data?.is_remainder == 1 
+                ? localization?.HomeDetails?.reminderEnabled || 'REMINDER ENABLED'
+                : localization?.HomeDetails?.reminderMe}
             </Typography>
           </TouchableOpacity>
         </View>
@@ -667,6 +688,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 8,
+  },
+  reminderButtonActive: {
+    backgroundColor: '#4CAF50',
   },
   reminderBtnIcon: {
     width: 14,

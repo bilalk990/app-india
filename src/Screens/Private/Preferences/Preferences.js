@@ -376,17 +376,19 @@ const Preferences = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}>
-        <Header
-          source_arrow={ImageConstant?.BackArrow}
-          style_backarrow={{
-            borderWidth: 1,
-            padding: 20,
-            borderColor: '#FFFFFF',
-            tintColor: '#FFFFFF',
-            borderRadius: 16,
-          }}
-        />
+      <LinearGradient colors={['#F53800', '#E43500']} style={styles.background}>
+        <View style={{ paddingTop: insets.top || STATUSBAR_HEIGHT }}>
+          <Header
+            source_arrow={ImageConstant?.BackArrow}
+            style_backarrow={{
+              borderWidth: 1,
+              padding: 20,
+              borderColor: '#FFFFFF',
+              tintColor: '#FFFFFF',
+              borderRadius: 16,
+            }}
+          />
+        </View>
         <View style={styles.profileContainer}>
           <Typography type={Font?.Manrope_Regular} size={30} color="#FFF">
             {localization?.Preferences?.my_profile}
@@ -581,7 +583,7 @@ export default Preferences;
 
 const styles = StyleSheet.create({
   background: {
-    height: 310 + STATUSBAR_HEIGHT,
+    height: 310,
     paddingHorizontal: 20,
   },
   container: {

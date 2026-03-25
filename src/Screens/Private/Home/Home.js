@@ -493,12 +493,13 @@ const HomeScreen = ({ navigation }) => {
             </View>
             <View style={styles.sunInfo}>
               <View
-                style={{ justifyContent: 'flex-end', alignItems: 'flex-end' }}
+                style={{ justifyContent: 'flex-end', alignItems: 'flex-end', marginBottom: 12 }}
               >
                 <Typography
                   style={styles.sunLabel}
-                  size={18}
+                  size={16}
                   type={Font?.Poppins_SemiBold}
+                  numberOfLines={1}
                 >
                   🌞 {localization?.Home?.sunrise}
                 </Typography>
@@ -515,8 +516,9 @@ const HomeScreen = ({ navigation }) => {
               >
                 <Typography
                   style={styles.sunLabel}
-                  size={18}
+                  size={16}
                   type={Font?.Poppins_SemiBold}
+                  numberOfLines={1}
                 >
                   🌇 {localization?.Home?.sunset}
                 </Typography>
@@ -1111,11 +1113,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    width: '30%',
+    width: '35%',
+    minWidth: 140,
   },
   sunLabel: {
     color: '#fff',
     fontWeight: 'bold',
+    flexShrink: 0,
   },
   sunTime: {
     color: '#fff',

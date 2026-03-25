@@ -233,15 +233,19 @@ const Festivals = ({ navigation }) => {
         <Typography style={styles.cardTitle} type={Font.Poppins_Bold}>
           {item?.festival_desc?.name || item.name}
         </Typography>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <Typography>{item?.festival_desc?.name || item.name}</Typography>
-          <Typography style={styles.viewDetails} type={Font.Poppins_SemiBold}>
-            {localization?.Festivals?.view_details}{' '}
-            <Image
-              source={ImageConstant.rightarrow}
-              style={{ width: 17, height: 10 }}
-            />
+        <View style={styles.cardFooter}>
+          <Typography style={styles.cardSubtitle} numberOfLines={1}>
+            {item?.festival_desc?.name || item.name}
           </Typography>
+          <TouchableOpacity style={styles.viewDetailsBtn}>
+            <Typography style={styles.viewDetails} type={Font.Poppins_SemiBold}>
+              {localization?.Festivals?.view_details}{' '}
+              <Image
+                source={ImageConstant.rightarrow}
+                style={{ width: 17, height: 10 }}
+              />
+            </Typography>
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
@@ -510,6 +514,7 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     padding: 15,
+    paddingBottom: 10,
   },
   cardDate: {
     fontSize: 13,
@@ -520,10 +525,24 @@ const styles = StyleSheet.create({
     marginTop: 4,
     color: '#000',
   },
+  cardFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 8,
+    gap: 10,
+  },
+  cardSubtitle: {
+    flex: 1,
+    fontSize: 14,
+    color: '#5B5B5B',
+  },
+  viewDetailsBtn: {
+    flexShrink: 0,
+  },
   viewDetails: {
     fontSize: 14,
     color: '#E41D54',
-    marginTop: 10,
   },
   topRightIcons: {
     position: 'absolute',
