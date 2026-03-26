@@ -31,6 +31,7 @@ const HomeDeatils = ({ navigation, route }) => {
   const [beforeEkadashi, setBeforeEkadashi] = useState(true);
   const [onEkadashi, setOnEkadashi] = useState(false);
   const [data, setData] = useState({});
+  const [isReminderSet, setIsReminderSet] = useState(route?.params?.data?.is_remainder == 1);
   const [Modaldata, seModaltData] = useState({
 
   });
@@ -122,11 +123,7 @@ useEffect(() => {
 
           SimpleToast?.show(success?.message || 'Reminder created successfully');
           setVisible(false);
-          
-          // Update the route params to reflect reminder is enabled
-          if (route?.params?.data) {
-            route.params.data.is_remainder = 1;
-          }
+          setIsReminderSet(true);
           
           // Refresh the festival data
           if (data?.id) {
@@ -196,10 +193,10 @@ useEffect(() => {
           <TouchableOpacity
             style={[
               styles.reminderButton,
-              route?.params?.data?.is_remainder == 1 && styles.reminderButtonActive
+              isReminderSet && styles.reminderButtonActive
             ]}
             onPress={() => {
-              if (route?.params?.data?.is_remainder == 1) {
+              if (isReminderSet) {
                 SimpleToast.show('Reminder is already enabled for this festival');
               } else {
                 setVisible(true);
@@ -211,7 +208,7 @@ useEffect(() => {
               style={styles.reminderBtnIcon}
             />
             <Typography color={'#fff'} size={12} type={Font?.Poppins_Medium}>
-              {route?.params?.data?.is_remainder == 1 
+              {isReminderSet
                 ? localization?.HomeDetails?.reminderEnabled || 'REMINDER ENABLED'
                 : localization?.HomeDetails?.reminderMe}
             </Typography>
