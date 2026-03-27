@@ -7,7 +7,9 @@ import {
   Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import appleAuth from '@invertase/react-native-apple-authentication';
+import appleAuth, {
+  appleAuthAndroid,
+} from '@invertase/react-native-apple-authentication';
 
 import { ImageConstant } from '../../Constants/ImageConstant';
 import Typography from '../../Component/UI/Typography';
@@ -185,13 +187,35 @@ const SocialLogin = ({ navigation }) => {
 
   const appleSignIn = async () => {
     try {
-      // Check if Apple Sign-In is supported
+      if (Platform.OS === 'android') {
+        // Android flow using appleAuthAndroid
+        // IMPORTANT: clientId must be your Service ID from Apple Developer portal
+        appleAuthAndroid.configure({
+          clientId: 'com.remyndnow.login.android', // Replace with your Service ID
+          redirectUri: 'https://railway-production-adaa.up.railway.app/api/social-login', // Production Redirect URI
+          responseType: appleAuthAndroid.ResponseType.ALL,
+          scope: appleAuthAndroid.Scope.ALL,
+        });
+
+        const response = await appleAuthAndroid.signIn();
+        if (response) {
+          const { user, email, fullName, nonce, identityToken } = response;
+          let name = 'Apple User';
+          if (fullName) {
+            name = `${fullName.givenName || ''} ${fullName.familyName || ''}`.trim();
+          }
+          handleAppleLoginOnBackend(user, email, name);
+        }
+        return;
+      }
+
+      // Check if Apple Sign-In is supported (iOS only native check)
       if (!appleAuth.isSupported) {
         SimpleToast.show('Apple Sign-In is not supported on this device');
         return;
       }
 
-      // Perform Apple Sign-In request
+      // Perform Apple Sign-In request (iOS Native)
       const appleAuthRequestResponse = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -209,7 +233,7 @@ const SocialLogin = ({ navigation }) => {
       }
 
       // Extract user info
-      const { user, email, fullName, identityToken } = appleAuthRequestResponse;
+      const { user, email, fullName } = appleAuthRequestResponse;
 
       // Construct name from fullName object
       let name = '';
@@ -224,6 +248,19 @@ const SocialLogin = ({ navigation }) => {
         name = 'Apple User';
       }
 
+      handleAppleLoginOnBackend(user, email, name);
+    } catch (error) {
+      console.log('Apple Sign-In error:', error);
+      if (error.code === appleAuth.Error.CANCELED || error.code === '1001') {
+        console.log('User canceled Apple Sign-In');
+      } else {
+        SimpleToast.show('Something went wrong with Apple Sign-In');
+      }
+    }
+  };
+
+  const handleAppleLoginOnBackend = async (user, email, name) => {
+    try {
       // Get FCM token
       const FCMToken = await AsyncStorage.getItem('fcm_token');
       let cleanToken = '';
@@ -282,12 +319,7 @@ const SocialLogin = ({ navigation }) => {
         },
       );
     } catch (error) {
-      console.log('Apple Sign-In error:', error);
-      if (error.code === appleAuth.Error.CANCELED) {
-        console.log('User canceled Apple Sign-In');
-      } else {
-        SimpleToast.show('Something went wrong with Apple Sign-In');
-      }
+      console.log('handleAppleLoginOnBackend error:', error);
     }
   };
 
