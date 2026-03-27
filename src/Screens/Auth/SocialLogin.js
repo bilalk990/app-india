@@ -7,6 +7,7 @@ import {
   Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import appleAuth from '@invertase/react-native-apple-authentication';
 
 import { ImageConstant } from '../../Constants/ImageConstant';
 import Typography from '../../Component/UI/Typography';
@@ -182,6 +183,114 @@ const SocialLogin = ({ navigation }) => {
     }
   };
 
+  const appleSignIn = async () => {
+    try {
+      // Check if Apple Sign-In is supported
+      if (!appleAuth.isSupported) {
+        SimpleToast.show('Apple Sign-In is not supported on this device');
+        return;
+      }
+
+      // Perform Apple Sign-In request
+      const appleAuthRequestResponse = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.LOGIN,
+        requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      });
+
+      // Get credential state
+      const credentialState = await appleAuth.getCredentialStateForUser(
+        appleAuthRequestResponse.user,
+      );
+
+      // Check if authorized
+      if (credentialState !== appleAuth.State.AUTHORIZED) {
+        SimpleToast.show('Apple Sign-In was not authorized');
+        return;
+      }
+
+      // Extract user info
+      const { user, email, fullName, identityToken } = appleAuthRequestResponse;
+
+      // Construct name from fullName object
+      let name = '';
+      if (fullName) {
+        const firstName = fullName.givenName || '';
+        const lastName = fullName.familyName || '';
+        name = `${firstName} ${lastName}`.trim();
+      }
+
+      // If no name provided, use default
+      if (!name) {
+        name = 'Apple User';
+      }
+
+      // Get FCM token
+      const FCMToken = await AsyncStorage.getItem('fcm_token');
+      let cleanToken = '';
+      if (FCMToken) {
+        try {
+          cleanToken = JSON.parse(FCMToken);
+        } catch (e) {
+          cleanToken = FCMToken.replace(/^"+|"+$/g, '');
+        }
+      }
+
+      // Prepare data for backend
+      let formData = new FormData();
+      formData.append('social_id', user);
+      formData.append('provider', 'apple');
+      formData.append('email', email || `${user}@apple.social`);
+      formData.append('name', name);
+      formData.append('device_id', cleanToken);
+      formData.append('device_type', Platform.OS === 'android' ? 'android' : 'ios');
+
+      console.log('Apple Sign-In data:', { user, email, name });
+
+      // Send to backend
+      POST_FORM_WITHOUT_DATA(
+        'social-login',
+        formData,
+        success => {
+          console.log('Apple login success:', success);
+          if (success?.redirect === 'redirect_signup') {
+            navigation?.navigate('SiginUp', {
+              socialData: {
+                email: email || `${user}@apple.social`,
+                name: name,
+                social_id: user,
+              },
+            });
+          } else {
+            dispatch(Token(success?.token));
+            if (success?.user?.language) {
+              localization?.setLanguage(success?.user?.language);
+              dispatch(langCode(success?.user?.language));
+              setLanguage(success?.user?.language);
+            }
+            dispatch(isAuth(true));
+            dispatch(userDetails(success?.user));
+            SimpleToast?.show(success?.message || 'Apple login successful');
+          }
+        },
+        error => {
+          console.log('Apple login error:', error);
+          SimpleToast.show('Apple login failed. Please try again.');
+        },
+        fail => {
+          console.log('Apple login network fail:', fail);
+          SimpleToast.show('Network error. Please try again.');
+        },
+      );
+    } catch (error) {
+      console.log('Apple Sign-In error:', error);
+      if (error.code === appleAuth.Error.CANCELED) {
+        console.log('User canceled Apple Sign-In');
+      } else {
+        SimpleToast.show('Something went wrong with Apple Sign-In');
+      }
+    }
+  };
+
   return (
     <>
       <ImageBackground
@@ -254,8 +363,7 @@ const SocialLogin = ({ navigation }) => {
             <View style={styles.fullWidth}>
               <Button
                 onPress={() => {
-                  SimpleToast.show('Comming Soon');
-                  // navigation?.navigate('SiginUp');
+                  appleSignIn();
                 }}
                 icon={ImageConstant?.Apple}
                 linerColor={['#FFFFFF', '#FFFFFF']}
