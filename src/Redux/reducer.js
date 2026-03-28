@@ -43,7 +43,12 @@ const todoReducer = (state = initialState, action) => {
       };
     }
     case LOG_OUT: {
-      return initialState;
+      // Keep isPrivacyAccepted on logout - user already agreed once
+      return {
+        ...initialState,
+        isPrivacyAccepted: state.isPrivacyAccepted,
+        language_code: state.language_code,
+      };
     }
     case LANGUAGE_CODE:
       return {

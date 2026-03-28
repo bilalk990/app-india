@@ -190,29 +190,32 @@ useEffect(() => {
             </Typography>
           </View>
 
-          <TouchableOpacity
-            style={[
-              styles.reminderButton,
-              isReminderSet && styles.reminderButtonActive
-            ]}
-            onPress={() => {
-              if (isReminderSet) {
-                SimpleToast.show('Reminder is already enabled for this festival');
-              } else {
-                setVisible(true);
-              }
-            }}
-          >
-            <Image
-              source={ImageConstant?.reminder}
-              style={styles.reminderBtnIcon}
-            />
-            <Typography color={'#fff'} size={12} type={Font?.Poppins_Medium}>
-              {isReminderSet
-                ? localization?.HomeDetails?.reminderEnabled || 'REMINDER ENABLED'
-                : localization?.HomeDetails?.reminderMe}
-            </Typography>
-          </TouchableOpacity>
+          {/* Only show reminder button if festival date is in future */}
+          {moment(route?.params?.data?.date).isSameOrAfter(moment(), 'day') && (
+            <TouchableOpacity
+              style={[
+                styles.reminderButton,
+                isReminderSet && styles.reminderButtonActive
+              ]}
+              onPress={() => {
+                if (isReminderSet) {
+                  SimpleToast.show('Reminder is already enabled for this festival');
+                } else {
+                  setVisible(true);
+                }
+              }}
+            >
+              <Image
+                source={ImageConstant?.reminder}
+                style={styles.reminderBtnIcon}
+              />
+              <Typography color={'#fff'} size={12} type={Font?.Poppins_Medium}>
+                {isReminderSet
+                  ? localization?.HomeDetails?.reminderEnabled || 'REMINDER ENABLED'
+                  : localization?.HomeDetails?.reminderMe}
+              </Typography>
+            </TouchableOpacity>
+          )}
         </View>
 
         {/* Regional Names */}
