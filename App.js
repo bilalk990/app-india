@@ -7,7 +7,6 @@ import { Provider, useSelector } from 'react-redux';
 import { persistor, store } from './src/Redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import RootStack from './src/Navigation/RootStack';
-import Privacy from './src/Screens/Private/Setting/Privacy';
 import { getLanguage, setLanguage } from './src/Constants/AsyncStorage';
 import localization from './src/Constants/localization';
 import { PermissionsAndroid, Platform, View, StatusBar, Text, ActivityIndicator } from 'react-native';
@@ -147,17 +146,12 @@ export default App;
 
 const MainNavigation = () => {
   const isAuth = useSelector(store => store?.isAuth);
-  const isPrivacyAccepted = useSelector(state => state.isPrivacyAccepted);
   const languageCode = useSelector(state => state.language_code);
 
   return (
     <NavigationContainer ref={navigationRef} key={languageCode}>
       <FocusAwareStatusBar />
-      {isAuth ? (
-        isPrivacyAccepted ? <RootStack /> : <Privacy />
-      ) : (
-        <AuthStack />
-      )}
+      {isAuth ? <RootStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };
