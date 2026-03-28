@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 
 import Header from '../../../Component/Header';
 import { ImageConstant } from '../../../Constants/ImageConstant';
@@ -26,6 +27,7 @@ import SimpleModal from '../../../Component/UI/SimpleModal';
 import localization from '../../../Constants/localization';
 
 const Delete = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const [selectedReason, setSelectedReason] = useState('');
   const [otherReason, setOtherReason] = useState('');
   const [modal, setModal] = useState(false);
@@ -44,7 +46,7 @@ const Delete = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}>
+      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: insets.top }]}>
         <Header
           source_arrow={ImageConstant?.BackArrow}
           style_backarrow={{
@@ -62,7 +64,7 @@ const Delete = ({ navigation }) => {
             Font={Font?.Manrope_Regular}
             size={30}
           >
-             {localization?.Settings?.delete}
+            {localization?.Settings?.delete}
           </Typography>
           <Typography
             Font={Font?.Poppins_Bold}
@@ -70,7 +72,7 @@ const Delete = ({ navigation }) => {
             lineHeight={35}
             color="#fff"
           >
-           {localization?.Settings?.accountDeleteSubtitle}
+            {localization?.Settings?.accountDeleteSubtitle}
           </Typography>
           <Typography
             size={15}
@@ -176,7 +178,7 @@ const Delete = ({ navigation }) => {
             // icon={ImageConstant?.logout}
             linerColor={['#FFFFFF', '#FFFFFF']}
             style={{ borderWidth: 1, borderRadius: 10, borderColor: '#A6A6A6' }}
-             title={localization?.Settings?.confirmDelete}
+            title={localization?.Settings?.confirmDelete}
             title_style={{ color: '#A6A6A6' }}
           />
         </View>
@@ -189,7 +191,7 @@ export default Delete;
 
 const styles = StyleSheet.create({
   background: {
-    minHeight: 280 + STATUSBAR_HEIGHT,
+    minHeight: 280, // Adjusted for insets.top
     paddingHorizontal: 20,
     paddingBottom: 20,
   },

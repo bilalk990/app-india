@@ -8,8 +8,9 @@ import {
   Image,
   StatusBar,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT in favor of useSafeAreaInsets
 import HeaderForUser from '../../../Component/HeaderForUser';
 import { ImageConstant } from '../../../Constants/ImageConstant';
 import Typography from '../../../Component/UI/Typography';
@@ -17,8 +18,9 @@ import { Font } from '../../../Constants/Font';
 import HorizontalCalendar from './HorizontalCalendar';
 
 const Panchang = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   return (
-    <ScrollView style={[styles.container, { paddingTop: STATUSBAR_HEIGHT }]}>
+    <ScrollView style={[styles.container, { paddingTop: insets.top }]}>
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <HeaderForUser
         source_arrow={ImageConstant?.BackArrow}
@@ -41,7 +43,7 @@ const Panchang = ({ navigation }) => {
           For 6 july 2025, Wednesday
         </Typography>
       </View>
-     <HorizontalCalendar/>
+      <HorizontalCalendar />
       <View
         style={{
           backgroundColor: '#FFFFFF',

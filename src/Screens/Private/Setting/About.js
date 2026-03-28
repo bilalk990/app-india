@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Typography from '../../../Component/UI/Typography';
 import Button from '../../../Component/Button';
 import Header from '../../../Component/Header';
@@ -19,9 +20,10 @@ import localization from '../../../Constants/localization';
 import { GET } from '../../../Backend/Backend';
 import { useIsFocused } from '@react-navigation/native';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 
 const About = () => {
+  const insets = useSafeAreaInsets();
   const [loader, setLoader] = useState(false);
 
   const [data, setData] = useState({});
@@ -52,7 +54,7 @@ const About = () => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}>
+      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: insets.top }]}>
         <Header
           source_arrow={ImageConstant?.BackArrow}
           style_backarrow={{
@@ -86,7 +88,7 @@ export default About;
 
 const styles = StyleSheet.create({
   background: {
-    height: 243 + STATUSBAR_HEIGHT,
+    height: 243, // Removed STATUSBAR_HEIGHT from base height as it's added in paddingTop
     paddingHorizontal: 20,
   },
   profileContainer: {

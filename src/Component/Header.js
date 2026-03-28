@@ -14,6 +14,7 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Header = ({
   onPress,
@@ -31,6 +32,7 @@ const Header = ({
   onPressRightIcon = () => { },
 }) => {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   return (
     <View style={[styles.container, containerStyle]}>
       <StatusBar translucent={true} backgroundColor="transparent" barStyle="dark-content" />
@@ -53,9 +55,9 @@ const Header = ({
       </View>
       {centerIcon && (
         <View style={{ alignItems: "center", marginBottom: 14, marginTop: 40 }}>
-          <Image 
-            source={centerIconSource} 
-            style={{ height: 80, width: 70, marginBottom: 20, resizeMode: "contain" }} 
+          <Image
+            source={centerIconSource}
+            style={{ height: 80, width: 70, marginBottom: 20, resizeMode: "contain" }}
           />
           <Typography lineHeight={28} size={19} color={Colors.white}>
             {centerIconTitle}
@@ -73,10 +75,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderBottomRightRadius: 30,
     borderBottomLeftRadius: 30,
+    paddingTop: 0, // We will handle safe area in the parent or here
   },
   backContainer: {
     flexDirection: 'row',
-    paddingTop: heightPercentageToDP(1),
+    paddingTop: 10,
     justifyContent: 'space-between',
     alignItems: "center",
     borderBottomRightRadius: 20,

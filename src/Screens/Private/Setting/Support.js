@@ -8,6 +8,7 @@ import {
   Linking,
   ScrollView,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Typography from '../../../Component/UI/Typography';
 import Button from '../../../Component/Button';
 import Header from '../../../Component/Header';
@@ -16,14 +17,15 @@ import { Font } from '../../../Constants/Font';
 import LinearGradient from 'react-native-linear-gradient';
 import localization from '../../../Constants/localization';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 
 const Support = () => {
+  const insets = useSafeAreaInsets();
   const [activeIndex, setActiveIndex] = useState(null);
 
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}>
+      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: insets.top }]}>
         <Header
           source_arrow={ImageConstant?.BackArrow}
           style_backarrow={{
@@ -37,7 +39,7 @@ const Support = () => {
         />
         <View style={styles.profileContainer}>
           <Typography style={styles.profileName} type={Font?.Manrope_Regular}>
-             {localization?.Settings?.about}
+            {localization?.Settings?.about}
           </Typography>
           <Typography size={22} type={Font?.Manrope_Regular} color="#fff">
             {localization?.Settings?.helpu}
@@ -48,22 +50,22 @@ const Support = () => {
       <ScrollView contentContainerStyle={styles.container}>
         <Typography type={Font?.Manrope_Bold} size={22}>{localization?.Settings?.suport_title}</Typography>
         <Typography type={Font?.Manrope_Regular} size={14}>{localization?.Settings?.suport_subtitle}</Typography>
-        <View style={{marginTop:40}}>
-       <Button
+        <View style={{ marginTop: 40 }}>
+          <Button
             onPress={() => Linking.openURL('mailto:info@ourtemples.info')}
             main_style={{ width: '100%' }}
             icon={ImageConstant?.emails}
             linerColor={['#592009', '#592009']}
             title={'info@ourtemples.info'}
           />
-           <Button
-            onPress={()=>{Linking.openURL('https://wa.me/919129124917') }}
+          <Button
+            onPress={() => { Linking.openURL('https://wa.me/919129124917') }}
             main_style={{ width: '100%' }}
             icon={ImageConstant?.whatsapp}
             linerColor={['#01C73E', '#01C73E']}
             title={localization?.Settings?.whatsapp}
           />
-          </View>
+        </View>
       </ScrollView>
     </View>
   );
@@ -73,7 +75,7 @@ export default Support;
 
 const styles = StyleSheet.create({
   background: {
-    height: 261 + STATUSBAR_HEIGHT,
+    height: 261, // Adjusted for insets.top
     paddingHorizontal: 20,
   },
   profileContainer: {

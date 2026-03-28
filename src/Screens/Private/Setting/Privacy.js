@@ -9,6 +9,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Typography from '../../../Component/UI/Typography';
 import Button from '../../../Component/Button';
 import Header from '../../../Component/Header';
@@ -21,9 +22,10 @@ import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { isPrivacyAccepted } from '../../../Redux/action';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 
 const Privacy = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const [data, setData] = useState({});
   const [loader, setLoader] = useState(false);
   const dispatch = useDispatch();
@@ -62,7 +64,7 @@ const Privacy = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}>
+      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: insets.top }]}>
         {!isPrivacyAlreadyAccepted ? null : (
           <Header
             source_arrow={ImageConstant?.BackArrow}
@@ -109,7 +111,7 @@ export default Privacy;
 
 const styles = StyleSheet.create({
   background: {
-    height: 243 + STATUSBAR_HEIGHT,
+    height: 243, // Adjusted for insets.top
     paddingHorizontal: 20,
   },
   profileContainer: {

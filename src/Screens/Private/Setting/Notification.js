@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, FlatList, Image, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 import Typography from '../../../Component/UI/Typography';
 import Header from '../../../Component/Header';
 import { ImageConstant } from '../../../Constants/ImageConstant';
@@ -28,6 +29,7 @@ const notificationData = [
 ];
 
 const Notification = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const [notifications, setNotifications] = useState(notificationData);
 
   useEffect(() => {
@@ -84,7 +86,7 @@ const Notification = ({ navigation }) => {
       error => {
         console.log('error-0-MANAGE_NOTIFI---', error);
       },
-      fail => {},
+      fail => { },
     );
   };
 
@@ -130,7 +132,7 @@ const Notification = ({ navigation }) => {
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: '#FFFBF6', paddingHorizontal: 20, paddingTop: STATUSBAR_HEIGHT }}
+      style={{ flex: 1, backgroundColor: '#FFFBF6', paddingHorizontal: 20, paddingTop: insets.top }}
     >
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <Header

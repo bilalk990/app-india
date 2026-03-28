@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 import Header from '../../../Component/Header';
 import { ImageConstant } from '../../../Constants/ImageConstant';
 import Typography from '../../../Component/UI/Typography';
@@ -376,8 +376,8 @@ const Preferences = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <LinearGradient colors={['#F53800', '#E43500']} style={styles.background}>
-        <View style={{ paddingTop: insets.top || STATUSBAR_HEIGHT }}>
+      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: insets.top }]}>
+        <View>
           <Header
             source_arrow={ImageConstant?.BackArrow}
             style_backarrow={{
@@ -400,8 +400,8 @@ const Preferences = ({ navigation }) => {
               source={
                 profileImage
                   ? {
-                      uri: profileImage,
-                    }
+                    uri: profileImage,
+                  }
                   : userDetails?.profile_image || ImageConstant?.TestProfile
               }
               style={styles.profileImage}

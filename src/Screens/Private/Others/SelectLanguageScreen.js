@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Image, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 import Typography from '../../../Component/UI/Typography';
 import Button from '../../../Component/Button';
 import Header from '../../../Component/Header';
@@ -32,6 +33,7 @@ const languages = [
 ];
 
 const SelectLanguageScreen = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const languageCode = useSelector(state => state.language_code);
   const [selectedLang, setSelectedLang] = useState(languageCode || 'en');
 
@@ -51,7 +53,7 @@ const SelectLanguageScreen = ({ navigation }) => {
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 20, paddingTop: STATUSBAR_HEIGHT }}
+      style={{ flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 20, paddingTop: insets.top }}
     >
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <Header

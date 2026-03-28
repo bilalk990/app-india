@@ -8,9 +8,10 @@ import {
   Alert,
   Platform,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import React, { useState } from 'react';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 import Typography from '../../Component/UI/Typography';
 import Button from '../../Component/Button';
 import Input from '../../Component/Input';
@@ -35,6 +36,7 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SiginUp = ({ navigation, route }) => {
+  const insets = useSafeAreaInsets();
   const { socialData } = route?.params;
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
   const dispatch = useDispatch();
@@ -344,7 +346,7 @@ const SiginUp = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: STATUSBAR_HEIGHT }]}>
+      <LinearGradient colors={['#F53800', '#E43500']} style={[styles.background, { paddingTop: insets.top }]}>
         <Header
           source_arrow={ImageConstant?.BackArrow}
           style_backarrow={{
@@ -527,7 +529,7 @@ export default SiginUp;
 
 const styles = StyleSheet.create({
   background: {
-    height: 260 + STATUSBAR_HEIGHT,
+    height: 260, // Adjusted for insets.top
     paddingHorizontal: 20,
   },
   container: {

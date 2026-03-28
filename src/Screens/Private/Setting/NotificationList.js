@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, FlatList, Image, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 import Typography from '../../../Component/UI/Typography';
 import Header from '../../../Component/Header';
 import { ImageConstant } from '../../../Constants/ImageConstant';
@@ -12,6 +13,7 @@ import { GET_WITH_TOKEN } from '../../../Backend/Backend';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 const NotificationList = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const [notifications, setNotifications] = useState();
 
   useEffect(() => {
@@ -76,7 +78,7 @@ const NotificationList = ({ navigation }) => {
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: '#FFFBF6', paddingHorizontal: 20, paddingTop: STATUSBAR_HEIGHT }}
+      style={{ flex: 1, backgroundColor: '#FFFBF6', paddingHorizontal: 20, paddingTop: insets.top }}
     >
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <Header

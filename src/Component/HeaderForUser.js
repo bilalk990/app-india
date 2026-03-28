@@ -14,6 +14,7 @@ import {
   widthPercentageToDP,
 } from 'react-native-responsive-screen';
 import { useNavigation } from '@react-navigation/native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HeaderForUser = ({
   onPress,
@@ -28,15 +29,16 @@ const HeaderForUser = ({
   backgroundColor = Colors.white,
   centerIconSource,
   centerIconTitle,
-  onPressRightIcon = () => {},
-  onPressLangIcon = () => {},
-  onPressLeftIcon = () => {},
-  onPressProfileIcon = () => {},
+  onPressRightIcon = () => { },
+  onPressLangIcon = () => { },
+  onPressLeftIcon = () => { },
+  onPressProfileIcon = () => { },
   back_img,
   Lang_icon,
   Profile_icon,
 }) => {
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   return (
     <View style={[styles.container, containerStyle]}>
       <StatusBar
@@ -109,7 +111,7 @@ const styles = StyleSheet.create({
   },
   backContainer: {
     flexDirection: 'row',
-    paddingTop: heightPercentageToDP(1),
+    paddingTop: 10,
     justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',

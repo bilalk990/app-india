@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Image, FlatList, Alert, StatusBar } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight || 0;
+// Removed STATUSBAR_HEIGHT
 import Typography from '../../../Component/UI/Typography';
 import Header from '../../../Component/Header';
 import { ImageConstant } from '../../../Constants/ImageConstant';
@@ -12,6 +13,7 @@ import moment from 'moment';
 import { heightPercentageToDP } from 'react-native-responsive-screen';
 
 const Reminders = ({ navigation }) => {
+  const insets = useSafeAreaInsets();
   const [reminderData, setReminderData] = useState([]);
 
   useEffect(() => {
@@ -119,12 +121,12 @@ const Reminders = ({ navigation }) => {
               resizeMode: 'contain',
             }}
           />
-           <Typography
+          <Typography
             type={Font?.Manrope_Regular}
             size={16}
             style={{ color: '#777', marginTop: 4 }}
           >
-           {`${item?.date}  -  ` }
+            {`${item?.date}  -  `}
           </Typography>
           <Typography
             type={Font?.Manrope_Regular}
@@ -134,8 +136,8 @@ const Reminders = ({ navigation }) => {
             6:00 AM
             {/* {moment(item.time, 'HH:mm:ss').format('h:mm A')} */}
           </Typography>
-          
-         
+
+
         </View>
       </View>
 
@@ -162,7 +164,7 @@ const Reminders = ({ navigation }) => {
 
   return (
     <View
-      style={{ flex: 1, backgroundColor: '#FFFBF6', paddingHorizontal: 20, paddingTop: STATUSBAR_HEIGHT }}
+      style={{ flex: 1, backgroundColor: '#FFFBF6', paddingHorizontal: 20, paddingTop: insets.top }}
     >
       <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
       <Header
