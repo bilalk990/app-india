@@ -14,18 +14,20 @@ import { ImageConstant } from '../../../Constants/ImageConstant';
 import HeaderForUser from '../../../Component/HeaderForUser';
 import Typography from '../../../Component/UI/Typography';
 import { Font } from '../../../Constants/Font';
-import CustomBottomSheet from '../SetPop.js/CustomBottomSheet';
-import Button from '../../../Component/Button';
-import DropdownComponent from '../../../Component/DropdownComponent';
-import moment from 'moment';
-import { GET, POST_FORM_DATA } from '../../../Backend/Backend';
 import { useIsFocused } from '@react-navigation/native';
 import localization from '../../../Constants/localization';
 import { validators } from '../../../Backend/Validator';
 import { isValidForm } from '../../../Backend/Utility';
 import SimpleToast from 'react-native-simple-toast';
+import CustomBottomSheet from '../SetPop.js/CustomBottomSheet';
+import Button from '../../../Component/Button';
+import DropdownComponent from '../../../Component/DropdownComponent';
+import moment from 'moment';
+import { GET, POST_FORM_DATA } from '../../../Backend/Backend';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HomeDeatils = ({ navigation, route }) => {
+  const insets = useSafeAreaInsets();
   const [visible, setVisible] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
   const [beforeEkadashi, setBeforeEkadashi] = useState(true);
@@ -38,11 +40,11 @@ const HomeDeatils = ({ navigation, route }) => {
   const [upcoming_festivals, setUpcoming_festivals] = useState([]);
   const isFocused = useIsFocused();
   // alert (route?.params?.data?.is_remainder)
-useEffect(() => {
-  if (!Modaldata.selectDay) {
-    seModaltData({ ...Modaldata, selectDay:  { label: '1 Day', value: '1_day' } });
-  }
-}, [isFocused]);
+  useEffect(() => {
+    if (!Modaldata.selectDay) {
+      seModaltData({ ...Modaldata, selectDay: { label: '1 Day', value: '1_day' } });
+    }
+  }, [isFocused]);
   const toggleAnswer = index => {
     setActiveIndex(index === activeIndex ? null : index);
   };
@@ -93,55 +95,55 @@ useEffect(() => {
     // setError(error);
     // beforeEkadashi
     // if (isValidForm(error)) {
-      let body = new FormData();
-      let firstDate = data?.date?.split(',')[0].trim();
-      const selectDate = onEkadashi
-        ? data?.date // all dates
-        : firstDate;
+    let body = new FormData();
+    let firstDate = data?.date?.split(',')[0].trim();
+    const selectDate = onEkadashi
+      ? data?.date // all dates
+      : firstDate;
 
-      console.log('Modaldata?.selectDay---', Modaldata?.selectDay?.label);
+    console.log('Modaldata?.selectDay---', Modaldata?.selectDay?.label);
 
-      body.append('festival_id', data?.id);
-      body.append('festival_date', selectDate);
-      body.append('before_days', Modaldata?.selectDay?.label?.split(' ')[0]);
-      body.append('is_recurring', onEkadashi == true ? 1 : 0);
-      console.log('data----', body);
+    body.append('festival_id', data?.id);
+    body.append('festival_date', selectDate);
+    body.append('before_days', Modaldata?.selectDay?.label?.split(' ')[0]);
+    body.append('is_recurring', onEkadashi == true ? 1 : 0);
+    console.log('data----', body);
 
-      const newBody = {
-        festival_id: data?.id,
-        festival_date: selectDate,
-        before_days: Modaldata?.selectDay?.label,
-        is_recurring: onEkadashi == true ? 1 : 0,
-      };
+    const newBody = {
+      festival_id: data?.id,
+      festival_date: selectDate,
+      before_days: Modaldata?.selectDay?.label,
+      is_recurring: onEkadashi == true ? 1 : 0,
+    };
 
-      // return;
-      POST_FORM_DATA(
-        'create-reminders',
-        body,
-        success => {
-          console.log('success---success---', success);
+    // return;
+    POST_FORM_DATA(
+      'create-reminders',
+      body,
+      success => {
+        console.log('success---success---', success);
 
-          SimpleToast?.show(success?.message || 'Reminder created successfully');
-          setVisible(false);
-          setIsReminderSet(true);
-          
-          // Update the route params so Home screen knows reminder is set
-          if (route?.params?.data) {
-            route.params.data.is_remainder = 1;
-          }
-          
-          // Refresh the festival data
-          if (data?.id) {
-            getTemples(data.id);
-          }
-        },
-        error => {
-          console.log('error---error--', error);
-        },
-        fail => {
-          console.log('---fail----', fail);
-        },
-      );
+        SimpleToast?.show(success?.message || 'Reminder created successfully');
+        setVisible(false);
+        setIsReminderSet(true);
+
+        // Update the route params so Home screen knows reminder is set
+        if (route?.params?.data) {
+          route.params.data.is_remainder = 1;
+        }
+
+        // Refresh the festival data
+        if (data?.id) {
+          getTemples(data.id);
+        }
+      },
+      error => {
+        console.log('error---error--', error);
+      },
+      fail => {
+        console.log('---fail----', fail);
+      },
+    );
     // }
   };
 
@@ -154,7 +156,7 @@ useEffect(() => {
       {/* Header with Image */}
       <ImageBackground
         source={{ uri: data?.image }}
-        style={{ height: 285 + STATUSBAR_HEIGHT, width: '100%', paddingTop: STATUSBAR_HEIGHT }}
+        style={{ height: 285 + insets.top, width: '100%', paddingTop: insets.top + 10 }}
       >
         <View style={{ flex: 1, paddingHorizontal: 20 }}>
           <HeaderForUser
@@ -382,57 +384,57 @@ useEffect(() => {
         data?.history ||
         data?.temples_to_visit ||
         data?.other_info) && (
-        <View style={styles.highlightsSection}>
-          <Typography
-            style={styles.sectionTitle}
-            type={Font?.Poppins_Bold}
-          >
-            {localization?.HomeDetails?.festivalHighlights || 'Festival Highlights'}
-          </Typography>
+          <View style={styles.highlightsSection}>
+            <Typography
+              style={styles.sectionTitle}
+              type={Font?.Poppins_Bold}
+            >
+              {localization?.HomeDetails?.festivalHighlights || 'Festival Highlights'}
+            </Typography>
 
-          <View style={styles.highlightsCard}>
-            {(data?.festival_desc?.duration || data?.duration) && (
-              <View style={styles.highlightItem}>
-                <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
-                  {data?.festival_desc?.duration || data?.duration}
-                </Typography>
-              </View>
-            )}
+            <View style={styles.highlightsCard}>
+              {(data?.festival_desc?.duration || data?.duration) && (
+                <View style={styles.highlightItem}>
+                  <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
+                    {data?.festival_desc?.duration || data?.duration}
+                  </Typography>
+                </View>
+              )}
 
-            {(data?.festival_desc?.history || data?.history) && (
-              <View style={styles.highlightItem}>
-                <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
-                  {data?.festival_desc?.history || data?.history}
-                </Typography>
-              </View>
-            )}
+              {(data?.festival_desc?.history || data?.history) && (
+                <View style={styles.highlightItem}>
+                  <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
+                    {data?.festival_desc?.history || data?.history}
+                  </Typography>
+                </View>
+              )}
 
-            {(data?.festival_desc?.daily_significance || data?.daily_significance) && (
-              <View style={styles.highlightItem}>
-                <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
-                  {data?.festival_desc?.daily_significance || data?.daily_significance}
-                </Typography>
-              </View>
-            )}
+              {(data?.festival_desc?.daily_significance || data?.daily_significance) && (
+                <View style={styles.highlightItem}>
+                  <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
+                    {data?.festival_desc?.daily_significance || data?.daily_significance}
+                  </Typography>
+                </View>
+              )}
 
-            {(data?.festival_desc?.temples_to_visit || data?.temples_to_visit) && (
-              <View style={styles.highlightItem}>
-                <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
-                  {data?.festival_desc?.temples_to_visit || data?.temples_to_visit}
-                </Typography>
-              </View>
-            )}
+              {(data?.festival_desc?.temples_to_visit || data?.temples_to_visit) && (
+                <View style={styles.highlightItem}>
+                  <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
+                    {data?.festival_desc?.temples_to_visit || data?.temples_to_visit}
+                  </Typography>
+                </View>
+              )}
 
-            {(data?.festival_desc?.other_info || data?.other_info) && (
-              <View style={[styles.highlightItem, { borderBottomWidth: 0 }]}>
-                <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
-                  {data?.festival_desc?.other_info || data?.other_info}
-                </Typography>
-              </View>
-            )}
+              {(data?.festival_desc?.other_info || data?.other_info) && (
+                <View style={[styles.highlightItem, { borderBottomWidth: 0 }]}>
+                  <Typography style={styles.highlightText} type={Font?.Poppins_Regular}>
+                    {data?.festival_desc?.other_info || data?.other_info}
+                  </Typography>
+                </View>
+              )}
+            </View>
           </View>
-        </View>
-      )}
+        )}
 
       {/* FAQs Section */}
       {data?.faqs?.length > 0 && (
@@ -481,45 +483,45 @@ useEffect(() => {
         .filter(i => i !== route?.params?.data?.date)
         .map(d => d.trim())
         .filter(Boolean)?.length > 0 && (
-        <View style={styles.sectionBox}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Typography style={styles.sectionTitle} type={Font?.Poppins_Bold}>
-              {localization?.HomeDetails?.upcomingFestivals}
-            </Typography>
-          </View>
+          <View style={styles.sectionBox}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Typography style={styles.sectionTitle} type={Font?.Poppins_Bold}>
+                {localization?.HomeDetails?.upcomingFestivals}
+              </Typography>
+            </View>
 
-          {data?.date
-            ?.split(',')
-            .filter(i => i !== route?.params?.data?.date)
-            .map(d => d.trim())
-            .filter(Boolean)
-            .map((item, index) => (
-              <TouchableOpacity key={index} style={styles.upcomingCard}>
-                <View style={styles.upcomingIconBox}>
-                  <Image
-                    source={ImageConstant?.cal}
-                    style={styles.upcomingIcon}
-                  />
-                </View>
-                <View style={styles.rowBetweenWide}>
-                  <Typography
-                    style={{ left: 10, right: 10, width: '90%' }}
-                    size={17}
-                    type={Font?.Poppins_Regular}
-                  >
-                    {moment(item)
-                      ?.locale(localization?.getLanguage())
-                      ?.format('DD MMMM YYYY, dddd')}
-                  </Typography>
-                  <Image
-                    source={ImageConstant?.rightarrow}
-                    style={styles.rightArrow}
-                  />
-                </View>
-              </TouchableOpacity>
-            ))}
-        </View>
-      )}
+            {data?.date
+              ?.split(',')
+              .filter(i => i !== route?.params?.data?.date)
+              .map(d => d.trim())
+              .filter(Boolean)
+              .map((item, index) => (
+                <TouchableOpacity key={index} style={styles.upcomingCard}>
+                  <View style={styles.upcomingIconBox}>
+                    <Image
+                      source={ImageConstant?.cal}
+                      style={styles.upcomingIcon}
+                    />
+                  </View>
+                  <View style={styles.rowBetweenWide}>
+                    <Typography
+                      style={{ left: 10, right: 10, width: '90%' }}
+                      size={17}
+                      type={Font?.Poppins_Regular}
+                    >
+                      {moment(item)
+                        ?.locale(localization?.getLanguage())
+                        ?.format('DD MMMM YYYY, dddd')}
+                    </Typography>
+                    <Image
+                      source={ImageConstant?.rightarrow}
+                      style={styles.rightArrow}
+                    />
+                  </View>
+                </TouchableOpacity>
+              ))}
+          </View>
+        )}
 
       {data?.festival_desc?.long_description && (
         <View style={styles.sectionBox}>
