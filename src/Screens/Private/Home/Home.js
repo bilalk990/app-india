@@ -59,13 +59,23 @@ const HomeScreen = ({ navigation }) => {
     sunrise: '06:05 AM',
     sunset: '07:05 PM',
   });
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  // Listen for navigation events to refresh when coming back from details
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Force refresh when screen comes into focus
+      setRefreshKey(prev => prev + 1);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     fetchLocation();
     getTemples();
     getNofitication();
     GetTipTop();
-  }, [isFocused]);
+  }, [isFocused, refreshKey]);
 
   const getNofitication = () => {
     GET_WITH_TOKEN(

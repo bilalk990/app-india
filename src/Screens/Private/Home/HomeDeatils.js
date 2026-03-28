@@ -125,6 +125,11 @@ useEffect(() => {
           setVisible(false);
           setIsReminderSet(true);
           
+          // Update the route params so Home screen knows reminder is set
+          if (route?.params?.data) {
+            route.params.data.is_remainder = 1;
+          }
+          
           // Refresh the festival data
           if (data?.id) {
             getTemples(data.id);
@@ -161,7 +166,11 @@ useEffect(() => {
               tintColor: '#F53800',
               borderRadius: 10,
             }}
-            onPressLeftIcon={() => navigation?.goBack()}
+            onPressLeftIcon={() => {
+              // Set a flag to refresh Home screen when going back
+              navigation.setParams({ refreshHome: true });
+              navigation?.goBack();
+            }}
           />
         </View>
       </ImageBackground>
